@@ -100,89 +100,122 @@
           <h2 class="text-base md:text-lg font-extrabold text-neutral-900">프롬프트 구성 요소 입력</h2>
           <p class="text-[11px] md:text-xs text-[#605E59] mt-0.5">각 항목을 작성하면 순서대로 하나의 프롬프트로 조합됩니다.</p>
         </div>
-        <span
-          class="bg-brand-100 text-brand-500 font-mono text-[11px] font-bold tracking-wider px-2.5 py-1 rounded-full">4
-          PARTS</span>
-      </div>
-
-      <!-- Sample Picker Panel -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center p-4 mb-5 bg-[#F8F7F4] border border-[#DDDBD5] rounded-xl">
-        <div class="md:col-span-2">
-          <label for="sample" class="block text-brand-500 text-xs md:text-sm font-bold mb-0.5">💡 샘플 프롬프트 선택</label>
-          <p class="text-[11px] text-[#605E59] leading-relaxed">실무 예시를 선택하면 4개 입력창이 자동으로 채워집니다.</p>
-        </div>
-        <div class="md:col-span-1">
-          <select id="sample" onchange="loadSample(this.value)"
-            class="w-full h-10 px-3 border border-[#DDDBD5] rounded-lg text-xs bg-white text-neutral-900 font-semibold focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all">
-            <option value="">샘플 선택</option>
-            <option value="ax">AX 보고서</option>
-            <option value="sales">영업 메일</option>
-            <option value="announcement">공지문 작성</option>
-            <option value="ideas">아이디어 요청</option>
-            <option value="codereview">코드 분석 및 최적화</option>
-            <option value="pr">보도자료(PR) 초안</option>
-          </select>
+        <div class="flex items-center gap-4 md:gap-6">
+          <!-- Dot Navigation -->
+          <div class="flex items-center gap-1.5 md:gap-2">
+            <button onclick="goToStep(1)" class="step-dot w-2.5 h-2.5 rounded-full transition-all focus:outline-none bg-brand-500" id="dot-1" aria-label="Step 1"></button>
+            <button onclick="goToStep(2)" class="step-dot w-2 h-2 rounded-full transition-all focus:outline-none bg-[#DDDBD5] hover:bg-brand-300" id="dot-2" aria-label="Step 2"></button>
+            <button onclick="goToStep(3)" class="step-dot w-2 h-2 rounded-full transition-all focus:outline-none bg-[#DDDBD5] hover:bg-brand-300" id="dot-3" aria-label="Step 3"></button>
+            <button onclick="goToStep(4)" class="step-dot w-2 h-2 rounded-full transition-all focus:outline-none bg-[#DDDBD5] hover:bg-brand-300" id="dot-4" aria-label="Step 4"></button>
+          </div>
+          <span id="step-badge"
+            class="bg-brand-100 text-brand-500 font-mono text-[11px] font-bold tracking-wider px-2.5 py-1 rounded-full">STEP 1/4</span>
         </div>
       </div>
 
-      <!-- Inputs Grid Layout -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Goal Input -->
-        <section class="flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
-          <div class="p-4 pb-2.5 min-h-[72px]">
-            <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">🎯 목표</strong>
-            <span class="block text-[#605E59] text-[10px] leading-tight">무엇을, 왜 요청하나요?</span>
-          </div>
-          <textarea id="goal" placeholder="예: 필요한 업무와 요청 목적을 작성해 주세요."
-            class="w-full min-h-[280px] lg:min-h-[330px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-y"></textarea>
-        </section>
+      <!-- Inputs Wizard Layout -->
+      <div class="flex items-center gap-1.5 md:gap-4 my-6">
+        <!-- Prev Button -->
+        <button id="prev-btn" onclick="prevStep()" 
+          class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center border border-[#DDDBD5] rounded-full bg-white hover:bg-neutral-50 text-neutral-900 transition-colors shadow-sm focus:outline-none invisible" 
+          aria-label="Previous step">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
 
-        <!-- Role Input -->
-        <section class="flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
-          <div class="p-4 pb-2.5 min-h-[72px]">
-            <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">👤 역할</strong>
-            <span class="block text-[#605E59] text-[10px] leading-tight">AI에게 어떤 역할을 맡기나요?</span>
-          </div>
-          <textarea id="role" placeholder="예: 너는 10년 차 디지털 전환 전문 컨설턴트야."
-            class="w-full min-h-[280px] lg:min-h-[330px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-y"></textarea>
-        </section>
+        <!-- Wizard Input Content Container -->
+        <div class="flex-1">
+          <!-- Goal Input (Step 1) -->
+          <section id="step-sec-1" class="step-section flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
+            <div class="p-4 pb-2.5 min-h-[72px]">
+              <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">🎯 목표</strong>
+              <span class="block text-[#605E59] text-[10px] leading-tight">무엇을, 왜 요청하나요?</span>
+            </div>
+            <textarea id="goal" placeholder="예: 필요한 업무와 요청 목적을 작성해 주세요."
+              class="w-full min-h-[420px] md:min-h-[460px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-none"></textarea>
+          </section>
 
-        <!-- Limit Input -->
-        <section class="flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
-          <div class="p-4 pb-2.5 min-h-[72px]">
-            <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">📌 제한</strong>
-            <span class="block text-[#605E59] text-[10px] leading-tight">기간, 범위, 톤, 분량 등 조건</span>
-          </div>
-          <textarea id="limit" placeholder="예: 최근 6개월 이내 사례 중심으로 정리해줘."
-            class="w-full min-h-[280px] lg:min-h-[330px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-y"></textarea>
-        </section>
+          <!-- Role Input (Step 2) -->
+          <section id="step-sec-2" class="step-section hidden flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
+            <div class="p-4 pb-2.5 min-h-[72px]">
+              <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">👤 역할</strong>
+              <span class="block text-[#605E59] text-[10px] leading-tight">AI에게 어떤 역할을 맡기나요?</span>
+            </div>
+            <textarea id="role" placeholder="예: 너는 10년 차 디지털 전환 전문 컨설턴트야."
+              class="w-full min-h-[420px] md:min-h-[460px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-none"></textarea>
+          </section>
 
-        <!-- Output Input -->
-        <section class="flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
-          <div class="p-4 pb-2.5 min-h-[72px]">
-            <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">📄 출력</strong>
-            <span class="block text-[#605E59] text-[10px] leading-tight">어떤 형식으로 받고 싶나요?</span>
-          </div>
-          <textarea id="output" placeholder="예: 핵심 요약, 사례 표, 인사이트 순으로 작성해줘."
-            class="w-full min-h-[280px] lg:min-h-[330px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-y"></textarea>
-        </section>
+          <!-- Limit Input (Step 3) -->
+          <section id="step-sec-3" class="step-section hidden flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
+            <div class="p-4 pb-2.5 min-h-[72px]">
+              <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">📌 제한</strong>
+              <span class="block text-[#605E59] text-[10px] leading-tight">기간, 범위, 톤, 분량 등 조건</span>
+            </div>
+            <textarea id="limit" placeholder="예: 최근 6개월 이내 사례 중심으로 정리해줘."
+              class="w-full min-h-[420px] md:min-h-[460px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-none"></textarea>
+          </section>
+
+          <!-- Output Input (Step 4) -->
+          <section id="step-sec-4" class="step-section hidden flex flex-col border border-[#DDDBD5] rounded-xl bg-brand-100 overflow-hidden">
+            <div class="p-4 pb-2.5 min-h-[72px]">
+              <strong class="block text-neutral-900 text-sm font-extrabold mb-0.5">📄 출력</strong>
+              <span class="block text-[#605E59] text-[10px] leading-tight">어떤 형식으로 받고 싶나요?</span>
+            </div>
+            <textarea id="output" placeholder="예: 핵심 요약, 사례 표, 인사이트 순으로 작성해줘."
+              class="w-full min-h-[420px] md:min-h-[460px] flex-1 p-4 border-t border-b border-[#DDDBD5] border-l-0 border-r-0 bg-white text-neutral-900 text-sm leading-relaxed placeholder-neutral-400 focus:border-brand-500 focus:ring-0 outline-none resize-none"></textarea>
+          </section>
+        </div>
+
+        <!-- Next Button -->
+        <button id="next-btn" onclick="nextStep()" 
+          class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center border border-[#DDDBD5] rounded-full bg-white hover:bg-neutral-50 text-neutral-900 transition-colors shadow-sm focus:outline-none" 
+          aria-label="Next step">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sample Pills Selector -->
+      <div class="mt-6 p-4 bg-[#F8F7F4] border border-[#DDDBD5] rounded-xl">
+        <label class="block text-brand-500 text-xs md:text-sm font-bold mb-1.5">💡 샘플 프롬프트 선택</label>
+        <p class="text-[11px] text-[#605E59] mb-3 leading-relaxed">원하는 실무 사례를 클릭하면 배경 안내 문구(Placeholder)로 설정됩니다.</p>
+        <div class="flex flex-wrap gap-2" id="sample-pills">
+          <button type="button" onclick="selectSample('ax')" id="pill-ax" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">AX 보고서</button>
+          <button type="button" onclick="selectSample('sales')" id="pill-sales" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">영업 메일</button>
+          <button type="button" onclick="selectSample('announcement')" id="pill-announcement" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">공지문 작성</button>
+          <button type="button" onclick="selectSample('ideas')" id="pill-ideas" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">아이디어 요청</button>
+          <button type="button" onclick="selectSample('codereview')" id="pill-codereview" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">코드 분석 및 최적화</button>
+          <button type="button" onclick="selectSample('pr')" id="pill-pr" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none">보도자료</button>
+          <button type="button" onclick="selectSample('')" id="pill-none" class="sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-brand-500 bg-brand-500 text-white transition-all focus:outline-none">직접 입력</button>
+        </div>
       </div>
 
       <!-- Actions Bottom Panel -->
-      <div class="flex justify-end gap-3 mt-6 pt-5 border-t border-[#DDDBD5]">
-        <button
-          class="px-5 h-11 border border-[#DDDBD5] bg-white hover:bg-neutral-50 text-neutral-900 text-xs md:text-sm font-bold rounded-lg transition-colors"
-          onclick="resetForm()">내용 지우기</button>
-        <button
-          class="px-6 h-11 bg-brand-500 hover:bg-brand-600 text-white text-xs md:text-sm font-extrabold rounded-lg transition-all shadow-sm flex items-center justify-center gap-1.5"
-          onclick="copyPrompt()">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          프롬프트 복사
-        </button>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6 pt-5 border-t border-[#DDDBD5]">
+        <!-- Copy Sample Checkbox -->
+        <label class="flex items-center gap-2.5 text-xs md:text-sm text-neutral-600 cursor-pointer select-none">
+          <input type="checkbox" id="copy-sample-chk" 
+            class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500 border-neutral-300 accent-brand-500">
+          <span class="font-semibold">샘플 프롬프트를 복사합니다</span>
+        </label>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3">
+          <button
+            class="px-5 h-11 border border-[#DDDBD5] bg-white hover:bg-neutral-50 text-neutral-900 text-xs md:text-sm font-bold rounded-lg transition-colors focus:outline-none"
+            onclick="resetForm()">내용 지우기</button>
+          <button
+            class="px-6 h-11 bg-brand-500 hover:bg-brand-600 text-white text-xs md:text-sm font-extrabold rounded-lg transition-all shadow-sm flex items-center justify-center gap-1.5 focus:outline-none"
+            onclick="copyPrompt()">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            프롬프트 복사
+          </button>
+        </div>
       </div>
 
       <!-- Form Notice -->
@@ -206,7 +239,7 @@
       role: document.getElementById('role'),
       limit: document.getElementById('limit'),
       output: document.getElementById('output'),
-      sample: document.getElementById('sample')
+      copySampleChk: document.getElementById('copy-sample-chk')
     };
 
     // Preloaded prompt template library
@@ -249,18 +282,119 @@
       }
     };
 
-    // Load sample data into active text fields
+    // Default placeholders registry
+    const defaultPlaceholders = {
+      goal: '예: 필요한 업무와 요청 목적을 작성해 주세요.',
+      role: '예: 너는 10년 차 디지털 전환 전문 컨설턴트야.',
+      limit: '예: 최근 6개월 이내 사례 중심으로 정리해줘.',
+      output: '예: 핵심 요약, 사례 표, 인사이트 순으로 작성해줘.'
+    };
+
+    // Wizard navigation state
+    let currentStep = 1;
+
+    function showStep(stepNum) {
+      if (stepNum < 1 || stepNum > 4) return;
+      currentStep = stepNum;
+
+      // Toggle sections
+      for (let i = 1; i <= 4; i++) {
+        const sec = document.getElementById(`step-sec-${i}`);
+        if (i === stepNum) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      }
+
+      // Update Prev Button visibility (invisible to avoid shifting)
+      const prevBtn = document.getElementById('prev-btn');
+      if (stepNum === 1) {
+        prevBtn.classList.add('invisible');
+      } else {
+        prevBtn.classList.remove('invisible');
+      }
+
+      // Update Next Button visibility
+      const nextBtn = document.getElementById('next-btn');
+      if (stepNum === 4) {
+        nextBtn.classList.add('invisible');
+      } else {
+        nextBtn.classList.remove('invisible');
+      }
+
+      // Update STEP badge
+      document.getElementById('step-badge').textContent = `STEP ${stepNum}/4`;
+
+      // Update dots navigation styling
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (i === stepNum) {
+          dot.className = 'step-dot w-2.5 h-2.5 rounded-full transition-all focus:outline-none bg-brand-500';
+        } else {
+          dot.className = 'step-dot w-2 h-2 rounded-full transition-all focus:outline-none bg-[#DDDBD5] hover:bg-brand-300';
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+    }
+
+    function nextStep() {
+      if (currentStep < 4) {
+        showStep(currentStep + 1);
+      }
+    }
+
+    function goToStep(stepNum) {
+      showStep(stepNum);
+    }
+
+    // Active sample tracking
+    let activeSampleKey = '';
+
+    function selectSample(key) {
+      activeSampleKey = key;
+      loadSample(key);
+      updatePillHighlights(key);
+    }
+
+    // Load sample placeholders instead of setting text values
     function loadSample(key) {
-      if (!key) { resetForm(); return; }
-      const d = samples[key];
-      el.goal.value = d.goal;
-      el.role.value = d.role;
-      el.limit.value = d.limit;
-      el.output.value = d.output;
+      if (!key) {
+        el.goal.placeholder = defaultPlaceholders.goal;
+        el.role.placeholder = defaultPlaceholders.role;
+        el.limit.placeholder = defaultPlaceholders.limit;
+        el.output.placeholder = defaultPlaceholders.output;
+      } else {
+        const d = samples[key];
+        el.goal.placeholder = d.goal;
+        el.role.placeholder = d.role;
+        el.limit.placeholder = d.limit;
+        el.output.placeholder = d.output;
+      }
+    }
+
+    // Update styling of bottom sample pills to indicate active choice
+    function updatePillHighlights(activeKey) {
+      const keys = ['ax', 'sales', 'announcement', 'ideas', 'codereview', 'pr', ''];
+      keys.forEach(k => {
+        const id = k === '' ? 'pill-none' : `pill-${k}`;
+        const btn = document.getElementById(id);
+        if (btn) {
+          if (k === activeKey) {
+            btn.className = 'sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-brand-500 bg-brand-500 text-white transition-all focus:outline-none';
+          } else {
+            btn.className = 'sample-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#DDDBD5] bg-white text-neutral-600 hover:bg-neutral-50 hover:border-brand-500/50 transition-all focus:outline-none';
+          }
+        }
+      });
     }
 
     // Combine active text fields into a cohesive structured prompt
-    // Adjusted copy order: 목표 -> 역할 -> 제한 -> 출력
     function compiled() {
       return [
         ['목표', el.goal.value.trim()],
@@ -270,10 +404,36 @@
       ].filter(([, v]) => v).map(([k, v]) => '[' + k + ']\n' + v).join('\n\n');
     }
 
+    // Combine standard predefined sample templates
+    function compileSample(key) {
+      const d = samples[key];
+      return [
+        ['목표', d.goal],
+        ['역할', d.role],
+        ['제한', d.limit],
+        ['출력', d.output]
+      ].map(([k, v]) => '[' + k + ']\n' + v).join('\n\n');
+    }
+
     // Handles fallback clipboard copy mechanism and UI Toast triggers
     async function copyPrompt() {
-      const text = compiled();
-      if (!text) { showToast('복사할 내용을 먼저 작성해 주세요.'); return; }
+      let text = '';
+      const copySample = el.copySampleChk.checked;
+
+      if (copySample) {
+        if (!activeSampleKey) {
+          showToast('먼저 샘플을 선택해 주세요.');
+          return;
+        }
+        text = compileSample(activeSampleKey);
+      } else {
+        text = compiled();
+        if (!text) {
+          showToast('복사할 내용을 먼저 작성해 주세요.');
+          return;
+        }
+      }
+
       try {
         await navigator.clipboard.writeText(text);
       } catch (e) {
@@ -295,7 +455,9 @@
       el.role.value = '';
       el.limit.value = '';
       el.output.value = '';
-      el.sample.value = '';
+      el.copySampleChk.checked = false;
+      selectSample('');
+      showStep(1);
     }
 
     // Elegant non-blocking popup notification
@@ -316,8 +478,7 @@
 
     // Bootstraps state load sequence on initial render
     window.addEventListener('DOMContentLoaded', () => {
-      el.sample.value = 'ax';
-      loadSample('ax');
+      selectSample('ax');
     });
   </script>
 </body>
